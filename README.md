@@ -33,7 +33,7 @@ This tool reads and writes Rocket League process memory. Using it in public, ran
 poetry install
 ```
 
-If Poetry creates a virtual environment, run commands through `poetry run`.
+This repository configures Poetry to create an in-project `.venv`. Run application commands through `poetry run`.
 
 ## Memory Writer
 
@@ -60,13 +60,13 @@ Run the bot from the repository root so the `memory_writer` module can be import
 Start Rocket League first, then run:
 
 ```bash
-poetry run python rlmarlbot/main.py
+poetry run python -m rlmarlbot
 ```
 
 Choose a bot interactively or pass one with `--bot`:
 
 ```bash
-poetry run python rlmarlbot/main.py --bot nexto
+poetry run python -m rlmarlbot --bot nexto
 ```
 
 Useful options:
