@@ -2,11 +2,11 @@ import warnings
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 from rlsdk_python import RLSDK, EventTypes, GameEvent, PRI, Ball, Car, PROCESS_NAME
 from rlsdk_python.events import EventPlayerTick, EventRoundActiveStateChanged
-from nexto.bot import Nexto
-from seer.bot import Seer
-from necto.bot import Necto
-from element.bot import Element
-from immortal.bot import Immortal
+from rlmarlbot.nexto.bot import Nexto
+from rlmarlbot.seer.bot import Seer
+from rlmarlbot.necto.bot import Necto
+from rlmarlbot.element.bot import Element
+from rlmarlbot.immortal.bot import Immortal
 from rlbot.utils.structures.game_data_struct import (
     BallInfo,
     Vector3,
@@ -23,15 +23,14 @@ import sys
 import time
 from rlbot.agents.base_agent import SimpleControllerState
 from prompt_toolkit import prompt
-import struct
 from threading import Event
-from memory_writer import memory_writer
+from rlmarlbot.memory_writer import memory_writer
 from colorama import Fore, Back, Style, just_fix_windows_console
 import json
 from rlmarlbot.map import MiniMap
 from threading import Thread
 import signal
-from helpers import (
+from rlmarlbot.helpers import (
     serialize_to_json,
     clear_screen,
 )
@@ -41,7 +40,8 @@ import math
 import os
 from rlgym_compat import GameState
 import numpy as np
-from element.sequences.speedflip import Speedflip
+from rlmarlbot.element.sequences.speedflip import Speedflip
+from rlmarlbot.input_codec import controller_to_input
 import warnings
 warnings.simplefilter('default') 
 import traceback
@@ -968,33 +968,7 @@ class RLMarlbot:
     ##########################
 
     def controller_to_input(self, controller: SimpleControllerState):
-        # convert controller (numpy) to FVehicleInputs bytes representation
-        inputs = bytearray(32)
-
-        # Packing the float values
-        inputs[0:4] = struct.pack("<f", controller.throttle)
-        inputs[4:8] = struct.pack("<f", controller.steer)
-        inputs[8:12] = struct.pack("<f", controller.pitch)
-        inputs[12:16] = struct.pack("<f", controller.yaw)
-        inputs[16:20] = struct.pack("<f", controller.roll)
-
-        # DodgeForward = -pitch
-        inputs[20:24] = struct.pack("<f", -controller.pitch)
-        # DodgeRight = yaw
-        inputs[24:28] = struct.pack("<f", controller.yaw)
-
-        # Rest of the inputs are booleans encoded in a single uint32
-        flags = 0
-        flags |= controller.handbrake << 0
-        flags |= controller.jump << 1
-        flags |= controller.boost << 2
-        flags |= controller.boost << 3
-        flags |= controller.use_item << 4
-
-        # Encode the flags into the last 4 bytes (uint32)
-        inputs[28:32] = struct.pack("<I", flags)
-
-        return inputs
+        return controller_to_input(controller)
 
     ###################
     ##### ACTIONS #####
@@ -1403,7 +1377,7 @@ class RLMarlbot:
         )
 
 
-if __name__ == "__main__":
+def main():
     parser = argparse.ArgumentParser(description="RLMarlbot")
     parser.add_argument("-p", "--pid", type=int, help="Rocket League process ID")
     parser.add_argument(
@@ -1454,3 +1428,7 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         bot.minimap_thread.join()
         sys.exit(0)
+
+
+if __name__ == "__main__":
+    main()

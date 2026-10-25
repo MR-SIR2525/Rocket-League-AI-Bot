@@ -60,13 +60,13 @@ Run the bot from the repository root so the `memory_writer` module can be import
 Start Rocket League first, then run:
 
 ```bash
-poetry run python rlmarlbot/main.py
+poetry run python -m rlmarlbot
 ```
 
 Choose a bot interactively or pass one with `--bot`:
 
 ```bash
-poetry run python rlmarlbot/main.py --bot nexto
+poetry run python -m rlmarlbot --bot nexto
 ```
 
 Useful options:

@@ -1,0 +1,41 @@
+# Python bytecode and test caches
+__pycache__/
+*.py[cod]
+*.pyd
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Local virtual environments
+.venv/
+venv/
+.env
+
+# Runtime-generated local state
+config.json
+game_tick_packet_*.json
+*.log
+
+# Python / native build output
+build/
+dist/
+*.spec.bak
+MemoryWriter/x64/
+MemoryWriter/Debug/
+MemoryWriter/Release/
+rlmarlbot/memory_writer/*.exp
+rlmarlbot/memory_writer/*.lib
+rlmarlbot/memory_writer/*.pdb
+
+# Visual Studio
+.vs/
+*.vcxproj.user
+*.suo
+*.user
+
+# OS/editor files
+.DS_Store
+Thumbs.db
+.vscode/
